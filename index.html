@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./main.js"></script>
+</head>
+
+<body>
+
+    <input type="file" class="file_upload">文件上传</src>
+
+    <div class="wrapper">
+        <img class="img_back"></img>
+        <div class="img_real" draggable="false"></div>
+    </div>
+
+    <style>
+        .wrapper {
+            font-size: 0;
+            display: inline-block;
+            border: 1px solid black;
+            position: relative;
+        }
+
+        .img_back {
+            max-width: 200px;
+            max-height: 200px;
+            display: inline-block;
+            opacity: 0.6
+        }
+
+        .img_real {
+            border: 1px solid blue;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-repeat: no-repeat;
+            background-position: -0 -0;
+        }
+    </style>
+</body>
+
+</html>
