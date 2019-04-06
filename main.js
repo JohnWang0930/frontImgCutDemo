@@ -30,6 +30,19 @@ window.addEventListener('load', function () {
         })
     }
 
+    // 获取元素相对于屏幕左边的距离 offsetLeft，offsetTop
+    function getPosition(node) {
+        let left = node.offsetLeft;
+        let top = node.offsetTop;
+        let parent = node.offsetParent;
+        while (parent != null) {
+            left += parent.offsetLeft;
+            top += parent.offsetTop;
+            parent = parent.offsetParent;
+        }
+        return { "left": left, "top": top };
+    }
+
     let xInit = 0
     let yInit = 0
     let status = false
@@ -37,8 +50,8 @@ window.addEventListener('load', function () {
     uploadEle.addEventListener('change', putImgOnBack)
     realEle.addEventListener('mousedown', function (e) {
         status = true
-        xInit = e.x
-        yInit = e.y
+        xInit = getPosition(e.target).left
+        yInit = getPosition(e.target).top
         console.log(e)
     })
     realEle.addEventListener('mousemove', function (e) {
