@@ -15,7 +15,7 @@
 
     <div class="wrapper">
         <img class="img_back"></img>
-        <div class="img_real" draggable="false"></div>
+        <img class="img_real" draggable="false"></i>
     </div>
 
     <style>
@@ -30,16 +30,16 @@
             max-width: 200px;
             max-height: 200px;
             display: inline-block;
-            opacity: 0.6
+            position: absolute;
+            opacity: 0.6;
         }
 
         .img_real {
-            border: 1px solid blue;
             position: absolute;
-            left: 0;
-            top: 0;
-            background-repeat: no-repeat;
-            background-position: -0 -0;
+            clip: auto;
+            display: inline-block;
+            max-width: 200px;
+            max-height: 200px;
         }
     </style>
 </body>

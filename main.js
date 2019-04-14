@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
     const uploadEle = document.querySelector('.file_upload') // 元素别名
-    const backEle = document.querySelector('.img_back')
-    const realEle = document.querySelector('.img_real')
+    const backEle = document.querySelector('.img_back') // 背景
+    const realEle = document.querySelector('.img_real') // 选择框
 
     function putImgOnBack(e) {
         if (!e.target.files || !e.target.files.length) {
@@ -11,13 +11,31 @@ window.addEventListener('load', function () {
         fileToBase64(file)
             .then(ret => {
                 backEle.src = ret
-                backEle.onload = function () {
-                    realEle.style.backgroundImage = `url('${ret}')`
-                    realEle.style.backgroundSize = `${backEle.width}px ${backEle.height}px`
-                    realEle.style.width = (backEle.width < backEle.height ? backEle.width : backEle.height) + 'px'
-                    realEle.style.height = (backEle.width < backEle.height ? backEle.width : backEle.height) + 'px'
+                realEle.src = ret
+                realEle.onload = function () {
+                    const length = getMin(realEle.width, realEle.height)
+                    changeClip(realEle, 0, 0, length, length)
                 }
             })
+    }
+
+    function getMin(a, b) {
+        return a < b ? a : b
+    }
+
+    function changeClip(dom, left, top, width, height) {
+        dom.style.clip = `rect(${+top}px,${+left + width}px,${+top + height}px,${+left}px)`
+    }
+
+    function getClip(dom) {
+        const str = dom.style.clip.match(/\((.+)\)/)[1]
+        const arr = str.split(',')
+        return {
+            top: +arr[0].replace(/[px ]/g, ''),
+            width: +arr[1].replace(/[px ]/g, '') - arr[3].replace(/[px ]/g, ''),
+            height: +arr[2].replace(/[px ]/g, '') - arr[0].replace(/[px ]/g, ''),
+            left: +arr[3].replace(/[px ]/g, '')
+        }
     }
 
     function fileToBase64(file) {
@@ -30,48 +48,18 @@ window.addEventListener('load', function () {
         })
     }
 
-    // 获取元素相对于屏幕左边的距离 offsetLeft，offsetTop
-    function getPosition(node) {
-        let left = node.offsetLeft;
-        let top = node.offsetTop;
-        let parent = node.offsetParent;
-        while (parent != null) {
-            left += parent.offsetLeft;
-            top += parent.offsetTop;
-            parent = parent.offsetParent;
-        }
-        return { "left": left, "top": top };
-    }
-
-    let xInit = 0
-    let yInit = 0
     let status = false
-    let time = false
     uploadEle.addEventListener('change', putImgOnBack)
     realEle.addEventListener('mousedown', function (e) {
         status = true
-        xInit = getPosition(e.target).left
-        yInit = getPosition(e.target).top
-        console.log(e)
     })
     realEle.addEventListener('mousemove', function (e) {
         if (!status) {
             return
         }
-        if (!time) {
-            time = true
-            setTimeout(() => {
-                time = false
-                const offX = xInit - e.x
-                const offY = yInit - e.y
-                Object.assign(realEle.style, {
-                    left: -offX + 'px',
-                    top: -offY + 'px',
-                    backgroundPosition: `${offX}px ${offY}px`,
-                })
-            }, 20)
-        }
-
+        time = false
+        const clip = getClip(realEle)
+        changeClip(realEle, +clip.left + e.movementX, +clip.top + e.movementY, clip.width, clip.height)
     })
     realEle.addEventListener('mouseup', function () {
         status = false
