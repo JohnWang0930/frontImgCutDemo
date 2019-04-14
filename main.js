@@ -2,6 +2,7 @@ window.addEventListener('load', function () {
     const uploadEle = document.querySelector('.file_upload') // 元素别名
     const backEle = document.querySelector('.img_back') // 背景
     const realEle = document.querySelector('.img_real') // 选择框
+    const preview = document.querySelector('.preview_img') // 预览
 
     function putImgOnBack(e) {
         if (!e.target.files || !e.target.files.length) {
@@ -12,9 +13,11 @@ window.addEventListener('load', function () {
             .then(ret => {
                 backEle.src = ret
                 realEle.src = ret
+                preview.src = ret
                 realEle.onload = function () {
                     const length = getMin(realEle.width, realEle.height)
                     changeClip(realEle, 0, 0, length, length)
+                    changeClip(preview, 0, 0, length, length)
                 }
             })
     }
@@ -60,6 +63,7 @@ window.addEventListener('load', function () {
         time = false
         const clip = getClip(realEle)
         changeClip(realEle, +clip.left + e.movementX, +clip.top + e.movementY, clip.width, clip.height)
+        changeClip(preview, +clip.left + e.movementX, +clip.top + e.movementY, clip.width, clip.height)
     })
     realEle.addEventListener('mouseup', function () {
         status = false

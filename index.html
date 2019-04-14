@@ -11,19 +11,27 @@
 
 <body>
 
-    <input type="file" class="file_upload">文件上传</src>
+    <input type="file" class="file_upload" />
 
     <div class="wrapper">
+        <span>裁剪框：</span>
         <img class="img_back"></img>
-        <img class="img_real" draggable="false"></i>
+        <img class="img_real" draggable="false"></img>
+    </div>
+
+    <div class="preview">
+        <span>预览框：</span>
+        <img class="preview_img"></img>
     </div>
 
     <style>
         .wrapper {
             font-size: 0;
-            display: inline-block;
-            border: 1px solid black;
             position: relative;
+        }
+
+        .wrapper * {
+            font-size: 20px;
         }
 
         .img_back {
@@ -34,12 +42,16 @@
             opacity: 0.6;
         }
 
-        .img_real {
+        .img_real,
+        .preview_img {
             position: absolute;
             clip: auto;
             display: inline-block;
             max-width: 200px;
             max-height: 200px;
+        }
+        .preview{
+            margin-top: 200px;
         }
     </style>
 </body>
